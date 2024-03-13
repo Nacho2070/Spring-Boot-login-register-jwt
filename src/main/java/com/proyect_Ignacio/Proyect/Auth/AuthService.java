@@ -1,6 +1,6 @@
 package com.proyect_Ignacio.Proyect.Auth;
 
-import java.io.UnsupportedEncodingException;
+
 import java.security.Principal;
 import java.util.Optional;
 
@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.proyect_Ignacio.Proyect.Exception.UserAlreadyExistException;
 import com.proyect_Ignacio.Proyect.Exception.UserNotFoundException;
 import com.proyect_Ignacio.Proyect.Requests.LoginRequest;
 import com.proyect_Ignacio.Proyect.Requests.RegisterRequest;
@@ -38,7 +39,12 @@ public class AuthService {
 
     
     public AuthResponse Login(LoginRequest request) {
-        
+
+        Optional<User> value = userRepository.findByEmail(request.getEmail());
+
+        if(value.isEmpty()){
+            throw new UserNotFoundException();
+        }
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         
         UserDetails userDetails = userRepository.findByEmail(request.getEmail()).orElseThrow();  
@@ -51,11 +57,12 @@ public class AuthService {
                
     }
 
-    public String Register( RegisterRequest request )throws UnsupportedEncodingException{
+    public String Register( RegisterRequest request ){
         
-       Optional<User> value = userRepository.findByEmail(request.getEmail());
-        if(value.isEmpty()){
-            throw new UserNotFoundException();
+          Optional<User> value = userRepository.findByEmail(request.getEmail());
+
+        if(value.isPresent()){
+            throw new UserAlreadyExistException();
         }
      
 

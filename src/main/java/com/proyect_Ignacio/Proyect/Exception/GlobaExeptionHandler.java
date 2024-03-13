@@ -34,5 +34,14 @@ public class GlobaExeptionHandler {
         body.put("message","User not found");
         return new ResponseEntity<>(body,HttpStatus.NOT_FOUND);
     }
+    
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Object> handleUserAlreadyExist(UserAlreadyExistException ex,WebRequest request) 
+    {
+        Map<String ,Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDate.now());
+        body.put("message","User already exist");
+        return new ResponseEntity<>(body,HttpStatus.NOT_FOUND);
+    }
 
 }

@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * DemoEndPoint
  */
 @RestController
-@RequestMapping("demo/")
+@RequestMapping("/secure")
 public class SecurePoint {
 
 
    @GetMapping("endpoint")  
    public String  SecurityEndpoint(){
-    return "Welcome to secure Endpoint";
+    return "Welcome to the Secure Endpoint";
    }
 
     
