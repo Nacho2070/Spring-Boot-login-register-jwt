@@ -19,6 +19,6 @@ This project demonstrates how to implement JSON Web Token (JWT) authentication w
 
 ## Endpoints:
 
-- **POST /api/auth/login**: Endpoint for user login.
-- **POST /api/auth/register**: Endpoint for user registration.
-- **POST /api/auth/change-password**: Endpoint for changing user password.
+- **POST /api/auth/login: Endpoint for user login.
+- **POST /api/auth/register: Endpoint for user registration.
+- **PATCH /api/auth/changePassword: Endpoint for changing user password.
