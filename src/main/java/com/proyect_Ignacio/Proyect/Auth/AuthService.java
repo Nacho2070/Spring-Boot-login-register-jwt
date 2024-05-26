@@ -22,12 +22,6 @@ import com.proyect_Ignacio.Proyect.jwt.JwtService;
 
 import lombok.RequiredArgsConstructor;
 
-/**
- * AuthService
- */
-
-
-//@NoArgsConstructor
 @Service
 @RequiredArgsConstructor 
 public class AuthService {
@@ -37,7 +31,6 @@ public class AuthService {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
 
-    
     public AuthResponse Login(LoginRequest request) {
 
         Optional<User> value = userRepository.findByEmail(request.getEmail());
@@ -64,44 +57,37 @@ public class AuthService {
         if(value.isPresent()){
             throw new UserAlreadyExistException();
         }
-     
 
            User user = new User();
-
            user.setEmail(request.getEmail());
            user.setFirstname(request.getFirstname()); 
            user.setPassword(passwordEncoder.encode(request.getPassword()));
            user.setRole(UserRole.USER);
 
-
           userRepository.save(user);
           return "User successfully registered";
-
     }
 
 
-    public String changePassword(changePasswordRequest request, Principal conecterUser) {
+    public String changePassword(changePasswordRequest request, Principal connectedUser) {
        
-        var user = (User) ((UsernamePasswordAuthenticationToken)conecterUser).getPrincipal(); 
+        var user = (User) ((UsernamePasswordAuthenticationToken)connectedUser).getPrincipal();
         
        //check if the current password is correct respected from database
        if(!passwordEncoder.matches(request.getCurrentPassword(),user.getPassword())){
 
         throw new IllegalStateException("Wrong password");
 
-       };
+       }
 
-       //check if the new password isn´t equals to the confirm password
+       //check if the new password isn´t equals to the config password
        if (!request.getNewPassword().equals( request.getValidatePassword() )) {
         throw new IllegalStateException("Password are not the same");
        }
-
        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
-
        
        userRepository.save(user);
-       return "Password has been changed!";    
-
+       return "Password has been changed";
 
     }
 

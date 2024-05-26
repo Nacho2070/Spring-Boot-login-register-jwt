@@ -14,22 +14,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.proyect_Ignacio.Proyect.User.UserRepository;
 
 import lombok.RequiredArgsConstructor;
-
-//We tell Spring to provide the authentication manager and password encoder we need
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
 
-    //Metod to return an Authentication Manager
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception
     {
         return config.getAuthenticationManager();
     }
 
-    //Method to return a provider
     @Bean
     public AuthenticationProvider authenticationProvider()
     {
@@ -38,18 +34,16 @@ public class ApplicationConfig {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
-    
+
     @Bean
     public UserDetailsService userDetailService() {
         return username -> userRepository.findByEmail(username)
         .orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
-    
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
     
 }

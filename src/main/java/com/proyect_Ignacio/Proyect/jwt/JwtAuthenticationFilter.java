@@ -19,10 +19,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
-/**
- * JwtAuthenticationFilter
- */
-
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
@@ -31,13 +27,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
     private final UserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(@SuppressWarnings("null") HttpServletRequest request, 
+    protected void doFilterInternal(@SuppressWarnings("null") HttpServletRequest request,
                                      @SuppressWarnings("null") HttpServletResponse response, @SuppressWarnings("null") FilterChain filterChain)
                                      throws ServletException, IOException, java.io.IOException {
              
         final String token = getTokenFromRequest(request);
         final String username;
-
 
         if (token==null)
         {
